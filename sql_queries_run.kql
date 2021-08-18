@@ -1,0 +1,9 @@
+AzureDiagnostics
+| where TimeGenerated >= ago(10d)
+| where LogicalServerName_s =~ "azrdbs01"
+| where database_name_s =~ "AZRDBS01"
+| where Category =~ "SQLSecurityAuditEvents"
+| where action_name_s in ("BATCH COMPLETED", "RPC COMPLETED")
+| project TimeGenerated, event_time_t, LogicalServerName_s, database_name_s, succeeded_s, session_id_d, action_name_s,
+            client_ip_s, session_server_principal_name_s , database_principal_name_s, statement_s, additional_information_s, application_name_s
+| top 1000 by TimeGenerated desc

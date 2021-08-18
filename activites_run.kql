@@ -1,0 +1,13 @@
+ADFActivityRun 
+| where Start > ago(2d) 
+| project Status, PipelineName, PipelineRunId, ActivityName, ActivityRunId, ActivityType, Start, End, 
+   DurationActivitySec = datetime_diff('second', End, Start),
+   DataReadMBs=parse_json(Output).dataRead /1024,
+   DataWrittenMBs=parse_json(Output).dataWritten, 
+   RowsRead = parse_json(Output).rowsRead,
+   RowsCopied = parse_json(Output).rowsCopied,
+   ThroughputKBps = parse_json(Output).throughput, 
+   CopyDurationSec = parse_json(Output).copyDuration, 
+   UsedDataIntegrationUnits = parse_json(Output).usedDataIntegrationUnits, 
+   UsedParallelCopies = parse_json(Output).usedParallelCopies,
+   a1 = parse_json(Output)

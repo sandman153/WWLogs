@@ -1,0 +1,10 @@
+ADFPipelineRun
+| extend pred = todynamic(Predecessors)
+//| extend id = 
+| project ResourceId, _SubscriptionId, 
+    PipelineName,
+    OperationName,
+    TriggerName = tostring(parse_json(pred[0].Name)),
+    InvokedBy = tostring(parse_json(pred[0].InvokedByType))
+| distinct *
+

@@ -1,0 +1,11 @@
+ADFTriggerRun 
+| extend tparam = todynamic(Parameters)
+| extend pay = todynamic(tparam.EventPayload)
+| where todatetime(TimeGenerated) > ago(30d)
+| project   _ResourceId, 
+            _SubscriptionId,
+            TimeGenerated,
+            TriggerName,
+            OperationName,
+            TriggerOn = tostring(parse_json(tostring(parse_json(pay)) ).subject)
+| distinct *
